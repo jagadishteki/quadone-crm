@@ -13,11 +13,11 @@ import { CampaignService } from '../../services/campaign.service';
 @Component({
   selector: 'app-manage-campaigns',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, NgMultiSelectDropDownModule, 
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, NgMultiSelectDropDownModule,
     NgxPaginationModule, AngularEditorModule],
   providers: [
 
-    ],
+  ],
   templateUrl: './manage-campaigns.component.html',
   styleUrl: './manage-campaigns.component.scss'
 })
@@ -28,7 +28,7 @@ export class ManageCampaignsComponent {
   editCampaignId!: number;
   formType!: string;
 
-  message!: string; 
+  message!: string;
   messageType!: string;
 
   config: AngularEditorConfig = {
@@ -40,10 +40,10 @@ export class ManageCampaignsComponent {
     translate: 'no',
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
-   
+
   };
 
-  campaigns: any;
+  campaigns: any = [];
   filteredCampaigns: any;
   p: number = 1;
   ipp: number = 2;
@@ -59,19 +59,25 @@ export class ManageCampaignsComponent {
 
 
   headers = [
-    { id: 1, field: 'campaignName', displayField: true, header: "Campaign", iconDisplay: true},
-    { id: 2, field: 'campaignIds', displayField: true, header: "Campaign Type", iconDisplay: true},
-    { id: 3, field: 'groupIds', displayField: true, header: "Contact Group", iconDisplay: true},
-    { id: 4, field: 'scheduledOn', displayField: true, header: "Scheduled", iconDisplay: true},
-    { id: 5, field: 'unitId', displayField: true, header: "Unit Name", iconDisplay: true},
-    { id: 6, field: 'approved', displayField: true, header: "Approved", iconDisplay: true},
-    { id: 7, field: 'campStatus', displayField: true, header: "Camp Status", iconDisplay: true},
-    { id: 8, field: 'createdOn', displayField: true, header: "Created", iconDisplay: true}
+    { id: 1, field: 'campaignName', displayField: true, header: "Campaign", iconDisplay: true },
+    { id: 2, field: 'campaignIds', displayField: true, header: "Campaign Type", iconDisplay: true },
+    { id: 3, field: 'groupIds', displayField: true, header: "Contact Group", iconDisplay: true },
+    { id: 4, field: 'scheduledOn', displayField: true, header: "Scheduled", iconDisplay: true },
+    { id: 5, field: 'unitId', displayField: true, header: "Unit Name", iconDisplay: true },
+    { id: 6, field: 'approved', displayField: true, header: "Approved", iconDisplay: true },
+    { id: 7, field: 'campStatus', displayField: true, header: "Camp Status", iconDisplay: true },
+    { id: 8, field: 'createdOn', displayField: true, header: "Created", iconDisplay: true }
   ];
 
-  dropdowns = [2,3,5,6,7];
+  dropdowns = [2, 3, 5, 6, 7];
 
   dropdownList = this.headers;
+
+  dropdownListFilter = [
+    { id: 1, campaignType: "SMS" },
+    { id: 2, campaignType: "Email" },
+    { id: 3, campaignType: "WhatsApp" },
+  ];
 
   dropdownListType = [
     { id: 1, campaignType: "SMS", validation: false },
@@ -89,6 +95,16 @@ export class ManageCampaignsComponent {
     unSelectAllText: 'UnSelect All',
     itemsShowLimit: 10,
     allowSearchFilter: true
+  };
+
+
+  dropdownSettingsFilter = {
+    singleSelection: false,
+    idField: 'id',
+    textField: 'campaignType',
+    selectAllText: 'Select All',
+    unSelectAllText: 'UnSelect All',
+    itemsShowLimit: 3,
   };
 
   dropdownSettingsType = {
@@ -111,6 +127,8 @@ export class ManageCampaignsComponent {
     allowSearchFilter: true
   };
 
+  selectedItemsFilter = [];
+
   selectedItems = [
     { id: 1, header: "Campaign" },
     { id: 2, header: "Campaign Type" },
@@ -120,7 +138,7 @@ export class ManageCampaignsComponent {
     { id: 6, header: "Approved" },
     { id: 7, header: "Camp Status" },
     { id: 8, header: "Scheduled" }
-];
+  ];
 
   selectedItemsType: any = [];
 
@@ -129,39 +147,39 @@ export class ManageCampaignsComponent {
   smsTemplate: boolean = false;
   emailTemplate: boolean = false;
   whatsAppTemplate: boolean = false;
-  
+
 
 
   constructor(
-    private dataService: DataService, 
+    private dataService: DataService,
     private contactService: ContactsService,
     private campaignService: CampaignService,
     private formBuilder: FormBuilder
-    ){
+  ) {
 
   }
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     this.getCampaigns();
     this.getAllBusinessUnits();
     this.getGroups();
     this.createCampaign();
   }
 
-  updateValidation(){
-    this.dropdownListType.forEach((item:any)=>{
+  updateValidation() {
+    this.dropdownListType.forEach((item: any) => {
       item.validation = false;
     })
-    this.selectedItemsType.forEach((item:any)=>{
-      this.dropdownListType.forEach((ele:any)=>{
-        if(item.id==ele.id){
+    this.selectedItemsType.forEach((item: any) => {
+      this.dropdownListType.forEach((ele: any) => {
+        if (item.id == ele.id) {
           ele.validation = true;
         }
       })
     })
   }
-  
-  createCampaign(){
+
+  createCampaign() {
     this.campaignForm = this.formBuilder.group({
       name: ['', Validators.required],
       date: ['', Validators.required],
@@ -188,13 +206,13 @@ export class ManageCampaignsComponent {
     })
   }
 
-  submitCampaign(campaign: any, template: any){
+  submitCampaign(campaign: any, template: any) {
 
-    let campaignIds = this.selectedItemsType.map((item: any)=>{
+    let campaignIds = this.selectedItemsType.map((item: any) => {
       return item.id;
     })
 
-    let groupIds = this.selectedItemsGroup.map((item: any)=>{
+    let groupIds = this.selectedItemsGroup.map((item: any) => {
       return item.id;
     })
     let campaignData = {
@@ -211,11 +229,11 @@ export class ManageCampaignsComponent {
       "whatsAppSenderId": campaign.whatsAppSenderId,
       "whatsAppTemplate": campaign.whatsAppTemplate,
       "groupIds": groupIds,
-      "scheduledOn": campaign.date+" "+campaign.time,
+      "scheduledOn": campaign.date + " " + campaign.time,
       "createdOn": new Date().toISOString().split(".")[0].replace('T', " "),
       "unitId": campaign.businessUnit,
       "approved": 0,
-      "campStatus": 1 
+      "campStatus": 1
     }
     console.log(campaignData);
 
@@ -257,8 +275,8 @@ export class ManageCampaignsComponent {
       modal.style.display = 'none';
     }
   }
-  
-  addCampaign(){
+
+  addCampaign() {
     this.formType = 'add';
     let formTitle = document.getElementById('form-title');
     if (formTitle) {
@@ -275,7 +293,7 @@ export class ManageCampaignsComponent {
       formTitle.innerText = 'Edit Campaign';
     }
     let date = campaign.scheduledOn.split(" ")[0];
-    let time = (campaign.scheduledOn.split(" ")[1])?(campaign.scheduledOn.split(" ")[1]) : "00:00";
+    let time = (campaign.scheduledOn.split(" ")[1]) ? (campaign.scheduledOn.split(" ")[1]) : "00:00";
 
     this.campaignForm.setValue({
       name: campaign.campaignName,
@@ -294,9 +312,9 @@ export class ManageCampaignsComponent {
       whatsAppTemplate: campaign.whatsAppTemplate
     })
 
-    campaign.campaignIds.forEach((item: any)=>{
-      this.dropdownListType.forEach((ele: any)=>{
-        if(item==ele.id){
+    campaign.campaignIds.forEach((item: any) => {
+      this.dropdownListType.forEach((ele: any) => {
+        if (item == ele.id) {
           this.selectedItemsType.push({
             id: ele.id,
             campaignType: ele.campaignType
@@ -308,9 +326,9 @@ export class ManageCampaignsComponent {
 
 
     this.getGroups();
-    campaign.groupIds.forEach((item: any)=>{
-      this.dropdownListGroup.forEach((ele: any)=>{
-        if(item==ele.id){
+    campaign.groupIds.forEach((item: any) => {
+      this.dropdownListGroup.forEach((ele: any) => {
+        if (item == ele.id) {
           this.selectedItemsGroup.push({
             id: ele.id,
             name: ele.name
@@ -319,16 +337,16 @@ export class ManageCampaignsComponent {
       })
     });
     this.selectedItemsGroup = [...this.selectedItemsGroup];
-    this.modalOpen('campaign');    
+    this.modalOpen('campaign');
   }
 
-  updateCampaign(){
+  updateCampaign() {
 
-    let campaignIds = this.selectedItemsType.map((item: any)=>{
+    let campaignIds = this.selectedItemsType.map((item: any) => {
       return item.id;
     })
 
-    let groupIds = this.selectedItemsGroup.map((item: any)=>{
+    let groupIds = this.selectedItemsGroup.map((item: any) => {
       return item.id;
     })
     let campaignData = {
@@ -346,7 +364,7 @@ export class ManageCampaignsComponent {
       "whatsAppSenderId": this.campaignForm.controls['whatsAppSenderId'].value,
       "whatsAppTemplate": this.campaignForm.controls['whatsAppTemplate'].value,
       "groupIds": groupIds,
-      "scheduledOn": this.campaignForm.controls['date'].value+" "+this.campaignForm.controls['time'].value,
+      "scheduledOn": this.campaignForm.controls['date'].value + " " + this.campaignForm.controls['time'].value,
       "unitId": this.campaignForm.controls['businessUnit'].value,
     }
     console.log(campaignData);
@@ -357,14 +375,14 @@ export class ManageCampaignsComponent {
         this.message = "Campaign Updated Successfully";
         this.messageType = "success";
 
-        this.filteredCampaigns.forEach((item:any)=>{
-          if(item.id==campaignData.id){
-            
+        this.filteredCampaigns.forEach((item: any) => {
+          if (item.id == campaignData.id) {
+
             item.name = campaignData.campaignName,
-            item.campaignIds = campaignData.campaignIds,
-            item.groupIds = campaignData.groupIds,
-            item.scheduledOn = campaignData.scheduledOn,
-            item.unitId = campaignData.unitId
+              item.campaignIds = campaignData.campaignIds,
+              item.groupIds = campaignData.groupIds,
+              item.scheduledOn = campaignData.scheduledOn,
+              item.unitId = campaignData.unitId
           }
         })
 
@@ -386,17 +404,34 @@ export class ManageCampaignsComponent {
   }
 
 
-  campaignStatus(campaignId: number, status: number){
+  campaignStatus(campaignId: number, status: number) {
 
   }
 
-  deleteCampaign(campaignId: any){
+  deleteCampaign(campaignId: any) {
     this.campaignService.deleteCampaign(campaignId).subscribe({
-      next: (res)=>{
+      next: (res) => {
         this.filteredCampaigns = this.filteredCampaigns.filter((campaign: any) => {
           return campaign.id != campaignId;
         })
       }
+    })
+  }
+
+  inputSearchFilter(filter: any, column: any) {
+    
+
+
+    let filterArr = filter.map((item:any)=>{
+      return item.id;
+    })
+    this.filteredCampaigns = this.campaigns.filter((campaign: any) => {
+      if((JSON.stringify(filterArr))=="[]"){
+        return true;
+      }else{
+        return JSON.stringify(campaign[column].sort((a: any, b: any) => a - b)) == JSON.stringify(filterArr.sort((a: any, b: any) => a - b));
+      }
+      
     })
   }
 
@@ -405,21 +440,21 @@ export class ManageCampaignsComponent {
     let searchText = event.target.value;
     this.filteredCampaigns = this.campaigns.filter((campaign: any) => {
 
-      if(Number.isInteger(campaign[column])){
-        if(searchText==-1){
+      if (Number.isInteger(campaign[column])) {
+        if (searchText == -1) {
           return true;
-        }else{
-          return campaign[column]==Number(searchText);
+        } else {
+          return campaign[column] == Number(searchText);
         }
-      }else{
+      } else {
         return campaign[column].toLowerCase().includes(searchText.toLowerCase());
       }
     })
   }
 
-  getCampaigns(){
+  getCampaigns() {
     this.campaignService.getCampaigns().subscribe({
-      next: (res)=>{
+      next: (res) => {
         this.campaigns = res;
         this.filteredCampaigns = this.campaigns;
       }
@@ -444,29 +479,29 @@ export class ManageCampaignsComponent {
     this.filteredCampaigns = this.filteredCampaigns.sort((a: any, b: any) => b[col] > a[col] ? 1 : -1);
   }
 
-  onItemSelect(event: any){
-    this.headers.forEach((item)=>{
-      if(event.id==item.id){
+  onItemSelect(event: any) {
+    this.headers.forEach((item) => {
+      if (event.id == item.id) {
         item.displayField = true;
       }
     })
   }
 
-  onItemSelect2(event: any){
+  onItemSelect2(event: any) {
   }
 
-  onItemDeSelect(event: any){
-    this.headers.forEach((item)=>{
-      if(event.id==item.id){
+  onItemDeSelect(event: any) {
+    this.headers.forEach((item) => {
+      if (event.id == item.id) {
         item.displayField = false;
       }
     })
   }
 
-  onSelectAll(event: any){
+  onSelectAll(event: any) {
   }
 
-  onSelectAll2(event: any){
+  onSelectAll2(event: any) {
   }
 
   searchStatus(searchForm: any) {
@@ -482,19 +517,19 @@ export class ManageCampaignsComponent {
       return (campaign.createdOn > fromDate) && (campaign.createdOn < toDate) && ((businessUnit !== -1) ? (campaign.unitName == businessUnit) : (campaign.unitName !== businessUnit));
     })
   }
-  getAllBusinessUnits(){
+  getAllBusinessUnits() {
     this.dataService.getAllBussinessUnits().subscribe({
-      next: (res: any)=>{
+      next: (res: any) => {
         this.businessUnits = res.response;
       }
     })
   }
 
-  campaignTypes(campaigns: any[]){
+  campaignTypes(campaigns: any[]) {
     let camps: any = [];
-    campaigns.forEach((item: any)=>{
-      this.dropdownListType.forEach((ele: any)=>{
-        if(item==ele.id){
+    campaigns.forEach((item: any) => {
+      this.dropdownListType.forEach((ele: any) => {
+        if (item == ele.id) {
           camps.push(ele.campaignType);
         }
       })
@@ -502,11 +537,11 @@ export class ManageCampaignsComponent {
     return camps;
   }
 
-  campaignGroups(groupIds: any[]){
+  campaignGroups(groupIds: any[]) {
     let groups: any = [];
-    groupIds.forEach((item: any)=>{
-      this.dropdownListGroup.forEach((ele: any)=>{
-        if(item==ele.id){
+    groupIds.forEach((item: any) => {
+      this.dropdownListGroup.forEach((ele: any) => {
+        if (item == ele.id) {
           groups.push(ele.name);
         }
       })
@@ -514,7 +549,7 @@ export class ManageCampaignsComponent {
     return groups;
   }
 
-  records(event: any){
+  records(event: any) {
     console.log(event.target.value);
     this.ipp = event.target.value;
   }

@@ -30,11 +30,12 @@
             </div>
         </form>
     </div>
-    <div class="row mt-3">
-        <div class="col-md-3">
-            <h3>Manage Contacts</h3>
+    <div class="d-flex mt-3">
+        <div>
+        <h3>Manage Contacts</h3>
         </div>
-        <div class="col-md-3"> <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+        <div class="ms-3">
+        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
                 data-bs-target="#upload">
                 <i class="bi bi-upload me-2"></i>Upload
             </button>
@@ -42,14 +43,15 @@
                 <i class="bi bi-file-earmark-plus me-2"></i>Add Contact
             </button>
         </div>
-        <div class="col-md-6 text-end">
-            <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="dropdownList" [(ngModel)]="selectedItems"
-                (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)" (onSelectAll)="onSelectAll($event)">
-            </ng-multiselect-dropdown>
-        </div>
     </div>
     <div class="search-result">
-        <div class="text-end"><pagination-controls (pageChange)="p = $event"></pagination-controls></div>
+        
+            <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="dropdownList" [(ngModel)]="selectedItems"
+            (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)" (onSelectAll)="onSelectAll($event)">
+        </ng-multiselect-dropdown>
+
+            <pagination-controls class="mt-1 float-end" (pageChange)="p = $event"></pagination-controls>
+        
         <table class="table table-striped table-bordered ">
             <thead>
                 <tr class="table-success">

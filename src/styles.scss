@@ -3,7 +3,8 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
 @import '../node_modules/font-awesome/css/font-awesome.css';
 
-html, body{
+html,
+body {
     padding: 0;
     margin: 0;
     min-height: 100%;
@@ -13,4 +14,11 @@ html, body{
 * {
     // font-family: 'Poppins', sans-serif;
     box-sizing: border-box;
+}
+
+.selected-item-container .selected-item {
+    max-width: none !important;
+    span {
+        font-size: 14px;
+    }
 }

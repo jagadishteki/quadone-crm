@@ -1,9 +1,9 @@
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-3">
+    <div class="d-flex">
+        <div>
             <h3>Manage Campaigns</h3>
         </div>
-        <div class="col-3"><button type="button" class="btn btn-success btn-sm ms-3" (click)="addCampaign()">
+        <div class="ms-3"><button type="button" class="btn btn-success btn-sm ms-3" (click)="addCampaign()">
                 <i class="bi bi-file-earmark-plus me-2"></i>Add Campaign
             </button>
         </div>
@@ -79,6 +79,16 @@
                                 <input type="text" class="form-control form-control-sm"
                                     (input)="inputSearch($event, item.field)">
                             </ng-container>
+
+                            <ng-container *ngIf="dropdowns.includes(item.id)">
+                                <ng-container *ngIf="item.id==2">
+                                    <ng-multiselect-dropdown [settings]="dropdownSettingsFilter" [data]="dropdownListFilter" [(ngModel)]="selectedItemsFilter"
+                                    (ngModelChange)="inputSearchFilter(selectedItemsFilter, item.field)">
+                                </ng-multiselect-dropdown>
+                                </ng-container>
+                            </ng-container>
+
+
                             <ng-container *ngIf="dropdowns.includes(item.id)">
                                 <ng-container *ngIf="item.id==5">
                                     <select (change)="inputSearch($event, item.field)" [ngModel]="-1"
@@ -88,6 +98,7 @@
                                         </option>
                                     </select>
                                 </ng-container>
+                            </ng-container>
 
                                 <ng-container *ngIf="item.id==6">
                                     <select (change)="inputSearch($event, item.field)" [ngModel]="-1"
@@ -108,7 +119,7 @@
                                 </ng-container>
 
 
-                            </ng-container>
+                            
                         </td>
                     </ng-container>
                     <td width="15%"></td>
