@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../../services/crm/data.service';
 
 import { BaseChartDirective } from 'ng2-charts';
-import { ChartData, ChartOptions } from 'chart.js';
 
 @Component({
   selector: 'app-dashboard',

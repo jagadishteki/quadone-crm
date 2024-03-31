@@ -31,10 +31,6 @@ export const CRM_ROUTES: Route[] = [
             {
                 path: 'contact-admin',
                 loadComponent: () => import('./contact-admin/contact-admin.component').then(c => c.ContactAdminComponent)
-            },
-            {
-                path: 'ngx-editor',
-                loadComponent: () => import('./ngx-editor/ngx-editor.component').then(c => c.NgxEditorComponent)
             }
         ]
     }

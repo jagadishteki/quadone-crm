@@ -1,5 +1,5 @@
 {
-  "name": "ahll-crm",
+  "name": "quad-crm",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:AHLL-CRM": "node dist/ahll-crm/server/server.mjs"
+    "serve:ssr:QUAD-CRM": "node dist/quad-crm/server/server.mjs"
   },
   "private": true,
   "dependencies": {
@@ -32,7 +32,6 @@
     "jspdf": "^2.5.1",
     "ng-multiselect-dropdown": "^1.0.0",
     "ng2-charts": "^6.0.0",
-    "ngx-editor": "^17.0.1",
     "ngx-pagination": "^6.0.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
