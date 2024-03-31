@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Quad_CRM_Frontend": {
+    "QUADONE_CRM_Frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/Quad_CRM_Frontend",
+            "outputPath": "dist/QUADONE_CRM_Frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -78,10 +78,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "Quad_CRM_Frontend:build:production"
+              "buildTarget": "QUADONE_CRM_Frontend:build:production"
             },
             "development": {
-              "buildTarget": "Quad_CRM_Frontend:build:development"
+              "buildTarget": "QUADONE_CRM_Frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -89,7 +89,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "Quad_CRM_Frontend:build"
+            "buildTarget": "QUADONE_CRM_Frontend:build"
           }
         },
         "test": {

@@ -9,7 +9,7 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'AHLL-CRM';
+  title = 'QUADONE-CRM';
 
   ngOnInit(): void{
 
